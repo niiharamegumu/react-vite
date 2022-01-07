@@ -7,15 +7,23 @@ import {
 } from "@chakra-ui/react";
 import { memo, useCallback, useEffect, VFC } from "react";
 import { useAllusers } from "../../hooks/useAllusers";
+import { useSelectUser } from "../../hooks/useSelectUser";
 import { UserCard } from "../organisms/user/UserCard";
 import { UserDetailModal } from "../organisms/user/UserDetailModal";
 
 export const UserManagement: VFC = memo(() => {
   const { getUsers, loading, users } = useAllusers();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onSelectUser, selectedUser } = useSelectUser();
 
   useEffect(() => getUsers(), []);
-  const onClickUser = useCallback(() => onOpen(), []);
+  const onClickUser = useCallback(
+    (id: number) => {
+      onSelectUser({ id, users });
+      onOpen();
+    },
+    [users]
+  );
 
   return (
     <>
@@ -33,6 +41,7 @@ export const UserManagement: VFC = memo(() => {
           {users.map((user) => (
             <GridItem key={user.id} m="auto">
               <UserCard
+                id={user.id}
                 image="https://source.unsplash.com/random"
                 fullName={user.username}
                 userName={user.name}
@@ -42,7 +51,7 @@ export const UserManagement: VFC = memo(() => {
           ))}
         </Grid>
       )}
-      <UserDetailModal isOpen={isOpen} onClose={onClose} />
+      <UserDetailModal isOpen={isOpen} onClose={onClose} user={selectedUser!} />
     </>
   );
 });

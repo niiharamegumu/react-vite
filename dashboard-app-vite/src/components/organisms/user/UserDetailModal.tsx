@@ -11,14 +11,16 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { memo, ReactNode, VFC } from "react";
+import { User } from "../../../types/api/user";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  user: User;
 };
 
 export const UserDetailModal: VFC<Props> = memo((props) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, user } = props;
   return (
     <Modal
       isOpen={isOpen}
@@ -34,19 +36,19 @@ export const UserDetailModal: VFC<Props> = memo((props) => {
           <Stack spacing={4}>
             <FormControl>
               <FormLabel>名前</FormLabel>
-              <Input value="megu" isReadOnly />
+              <Input value={user?.username} isReadOnly />
             </FormControl>
             <FormControl>
               <FormLabel>フルネーム</FormLabel>
-              <Input value="niihara megumu" isReadOnly />
+              <Input value={user?.name} isReadOnly />
             </FormControl>
             <FormControl>
               <FormLabel>メール</FormLabel>
-              <Input value="111@111.com" isReadOnly />
+              <Input value={user?.email} isReadOnly />
             </FormControl>
             <FormControl>
               <FormLabel>電話</FormLabel>
-              <Input value="000-0000-0000" isReadOnly />
+              <Input value={user?.phone} isReadOnly />
             </FormControl>
           </Stack>
         </ModalBody>
